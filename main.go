@@ -1,7 +1,10 @@
 package main
 
 import (
+	"SMSstore/handlers"
 	"github.com/joho/godotenv"
+	"log"
+	"net/http"
 	"os"
 
 	"SMSstore/config"
@@ -16,4 +19,12 @@ func main() {
 	config.ConnectMongo(uri)
 
 	// start HTTP server here
+	http.HandleFunc("/test", handlers.TestInsert)
+
+	http.HandleFunc(
+		"GET /v1/user/{userId}/messages",
+		handlers.GetMessagesByUser,
+	)
+
+	log.Fatal(http.ListenAndServe(":8090", nil))
 }
